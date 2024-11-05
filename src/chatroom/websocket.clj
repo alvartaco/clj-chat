@@ -149,14 +149,6 @@
    :headers {"Content-Type" "text/html"}
    :body (-> (login/login-view) (hiccup/html) (str))})
 
-(defn root-handler
-  [request]
-  ;(println (:query-string request))
-  #_(println request)
-  {:status 200
-   :headers {"Content-Typej" "text/html"}
-   :body "<h1>Please visit '/login' page</h1>"})
-
 (defn switch-chat-handler
   [request]
   (let [username (-> request :params :username)
@@ -170,7 +162,7 @@
 
 (defroutes app-routes
   ;; html
-  (GET "/" request (root-handler request))
+  (GET "/" request (login-request-handler request))
   (GET "/login" request (login-request-handler request))
   (POST "/chat" request (chat-handler request))
   (GET "/switch_chat" request (switch-chat-handler request))
@@ -179,7 +171,7 @@
   (GET "/ping" request (ping-handler request))
   (GET "/ws/connect" request (ws-connect-handler request)))
 
-;; server 
+;; server
 (defonce server (atom nil))
 
 (def app
